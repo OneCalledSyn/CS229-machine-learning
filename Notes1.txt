@@ -1,0 +1,54 @@
+    What is machine learning?
+
+-Arthur Samuel (1959): "the field of study that gives computers the ability to learn without being explicitly programmed." (older, informal definition)
+-Tom Mitchell (19xx): "A computer program is said to learn from experience E with respect to some class of tasks T and performance measure P,
+                if its performance at tasks in T, as measured by P, improves with experience E."
+
+    Supervised Learning
+
+-Have a dataset with the right answer already given, know what correct output should look like
+-Classified as either "regression" or "classification" problems
+    -Regression involves trying to predict results with a continuous output (ex. what is the selling price of a house based on house size?)
+    -Classification involes trying to predict results with a discrete output (ex. is a tumor benign or malignant?)
+
+    Unsupervised Learning
+-Not certain what the "right" answer looks like, must create structure from the data
+-Clustering is one method, tries to group chunks of data points by variables in the data
+
+    Model Representation
+- x⁽i⁾ to denote the “input” variables, also called input features, and y⁽i⁾ to denote the “output” or target variable that we are trying to predict 
+- A pair (x⁽i⁾ , y⁽i⁾ ) is called a training example
+- A list of m training examples (x⁽i⁾, y⁽i⁾); i = 1, ... , m is called a training set
+- X denotes the space of input values
+- Y denotes the space of output values
+- Goal: given a training set, to learn a function h : X → Y so that h(x) is a “good” predictor for the corresponding value of y
+    -h is called the "hypothesis" by convention, not the best name
+    
+    Cost Function
+-Used to measure the accuracy of the hypothesis
+-Formula: J(θ0,θ1) = (1/2m) sum from i=1 to m of (^yi - yi)^2 = (1/2m) sum from i=1 to m (hθ(xi)-yi)^2 	 
+-Basically a mean squared error function
+-For linear regression, the cost function will always be parabolic due to inherent nature of functions (squaring a linear gives a quadratic)
+-Objective is to minimize the value of the cost function; the smaller the more accurate the hypothesis is
+
+    Contour Plot
+-Consists of multiple contour lines
+-Contour line of a two variable function has a constant value at all points of the same line
+-In cost function context, the farther away from the center of the contour plot, the worse the hypothesis is
+
+    Gradient Descent
+-Algorithm used to estimate the parameters in the hypothesis function
+-θ0 is on the x axis, θ1 is on the y axis, and cost function is on the z axis
+-For absolute minimum z values on the graph, the cost function has been optimized
+-Process: Step down the cost function in the direction with the steepest slope until there is no direction which has a negative slope
+    -Steepest slope is calculated by taking the derivative of the cost function
+    -Step size is determined by α, which is the learning rate (bigger α = bigger step size)
+-Formula: θj:=θj − α(∂θ/j∂)*J(θ0,θ1) where j = 0, 1 is the feature number
+    -After each iteration, all parameters should be simultaneously updated
+    -Failing to converge or taking too long to converge are signs alpha is too big or too small respectively
+    -Once the derivative of the cost function reduces to zero, the minimum has been reached
+    
+    Gradient Descent for Linear Regression
+-Formula: θ0 := θ0 − (α/m) * ∑ for i=1 to m :(hθ(xi)−yi)
+        : θ1 := θ1 − (α/m) * ∑ for i=1 to m :((hθ(xi)−yi)xi)
+-Looking at every example in the training set is "batch gradient descent"
