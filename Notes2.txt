@@ -1,0 +1,153 @@
+
+    Multivariate Linear Regression
+    
+-Multivariate hypothesis function: hθ(x) = 1 x (n+1) matrix of θ0 through θn multiplied by a (n+1) x 1 matrix of x0 through xn 
+    -Define x0 as 1 for convenience
+    -Can be succinctly represented as hθ(x) = θᵀx
+    -xⱼ(i) is the value of the jth feature in the ith training sample
+    
+    Gradient Descent for Multiple Variables
+    
+-θⱼ : =θⱼ − (α/m) ∑ for i=1 to m: (hθ(x(i))−y(i))⋅xⱼ(i)    for for j := 0...n
+
+    Gradient Scaling in Practice
+    
+-Feature scaling: modify ranges of input variables so they are all similar. θ descends more efficiently on small ranges than
+ on large ones, so try to get -1 < xᵢ < 1 or similar
+-Mean normalization: subtract the average value of the input variable from the actual value of the variable, giving a new average for the input variable of 0
+-Combine both techniques: xᵢ := (xᵢ - μᵢ)/sᵢ
+-Debugging: plot iterations vs cost function, if J(θ) ever increases then decrease learning rate
+-Automatic convergence test: declare J(θ) has converged if J(θ) decreases by less than some predetermined user-defined threshold
+-For sufficiently small alpha, J(θ) should decrease with every iteration
+
+    Features and Polynomial Regression
+-Able to combine multiple features into one to create a new feature
+-Hypothesis doesnt need to fit a straight line, can be a quadratic, cubic, etc.
+
+    Normal Equation
+    
+-Another way of minimizing cost function besides gradient descent
+-No need to iterate, choose learning rate, or do feature scaling; just a direct solve
+-To derive formula, substitute hypothesis into cost function, then take the partial derivative 
+    with respect to theta and set equal to 0
+-Formula: θ=(XᵀX)⁻¹(Xᵀy)
+-Generally works better than gradient descent for smaller number of features
+    -Gradient descent has O(kn^2) runtime while normal equation has O(n^3) runtime
+    
+    Normal Equation Noninvertibility
+    
+-Using the 'pinv' (pseudoinverse) function in Octave will give a value for θ even if XᵀX cannot be inverted
+-Reasons for noninvertibility:
+    -If two features are linearly independent
+    -Too many features compared to the amount of training examples
+
+    Octave/MATLAB Tutorial
+
+- % is used for comments
+- ~= is used for not equals
+- && is logical AND
+- || is logical OR
+- xor(a,b) is XOR (true if odd number of true statements)
+- a = b assigns b to a new variable a and prints the result
+    -Add semicolon at the end of the line to prevent print
+- disp(A) will print out the value of A
+- disp(sprintf('2 decimal places: %0.2f', a) will print out a to 2 decimal places
+- format long changes default to 16 sig figs
+- format short changes default to 5 sig figs
+- Matrix defined by A = [a b; c d; e f] rows are separated by semicolons
+- Row vector defined by v = [a b c]
+- v = a:b:c will make a row vector with the 0th element as a and incrementing
+    by b until the last element, which is c
+    -If b is left out, the step size is default 1
+- ones(a,b) makes a matrix of all 1s with dimension a x b
+    -zeroes(a,b) does the same but with all 0 elements
+    -rand(a,b) does the same but with all random elements valued between 0 and 1
+    -randn(a,b) does the same but with all elements are drawn from a gaussian distribution with mean 0 and stdev 1
+- hist(a, n) makes a histogram of the elements in a using n bins
+- eye(n) makes an nxn identity matrix
+-help n brings up help about n!
+
+    Moving Data Around
+
+- size(A) returns a 1x2 matrix with the first element being the # of rows in A and the second element being the # of columns in A
+- length(v) will return the length of the longest dimension of a matrix
+- pwd shows the current path/directory that Octave is in
+- cd and ls are same as Linux commands
+- 'This is a string'
+- load filename.dat or load ('filename.dat') can both be used to load files
+- who: gives the variables and their values for the current workspace
+- whos: gives more in-depth info about the variables
+- clear A will remove the variable A from the workspace
+- save filename.mat v will save the variable v into a file
+    -save file.txt v -ascii will save v as an ascii formatted text file
+- clear by itself will remove all variables from the workspace
+- A(r, c) returns the element in A at the rth row and the cth column
+    -A(r, :) returns all elements in row r
+    -A(:, c) returns all elements in column c
+    -A(:, c)= [stuff] assigns stuff to the cth column of A
+    -A = [A, [stuff]] appends stuff as the rightmost column of A
+    -A(:) puts all elements of A into a single column vector
+-C = [A B] concatenates A and B into a single matrix side to side
+    -C = [A; B] concatenates A and B into a single matrix top to bottom
+
+    Computing on Data
+
+- A*B does matrix multiplication
+- A .* B does Hadamard product (element-wise multiplication)
+- A .^ 2 gives element-wise squaring of A (Hadamard power)
+- 1 ./ v gives element-wise inverse of v (Hadamard inverse)
+- A' gives the transpose of A
+- [val, ind] = max(a) gives value and index of greatest element in A
+- a < b checks each element of a against b and returns a boolean for each 
+- find(a < 3) tells which elements satisfy condition
+- A = magic(n) makes an nxn magic square
+- [r,c] = find(A >= 7 returns the row and column info for matches
+- sum(A) multiplies all the elements of A
+- prod(A) multiples all the elements of A
+- floor(A) rounds all elements of A down
+- ceil(A) rounds up all elements of A
+- pinv(A) is pseudoinverse of A
+- temp is a placeholder
+
+    Plotting Data
+    
+- plot(x,y, color) will make a 2D plot of the data
+- hold on; tells Octave to wait and keep the plot up to allow an overlaid plot
+- xlabel('string') labels the x axis
+- legend('string') makes a legend
+- title('string') titles the plot
+- print -dpng 'myplot.png'
+- figure(a) makes a plot that is called figure a 
+- subplot(a,b,c) divides a plot into an axb grid and accesses the cth element
+- axis([a b c d]) sets the domain of the plot to [a,b] and the range to [c,d]
+- clf; clears the current figure window
+- imagesc(A) displays A with scaled colors
+    - colorbar adds a bar on the side that show the values for the color scale
+    - colormap gray makes the scale black, white, and gray
+- Able to function chain with commas in one command line
+
+    Control Statements
+    
+- for loop: for i = 1:10,
+    - v(i) = 2^i
+  end;    
+        -Can also use break and continue in for loops
+- while loop: i =1;
+    while i <= 5,
+        v(i) = 100; 
+        i=i+1;
+    end;
+- conditional statements are in the form if/elseif/else
+- exit will close the Octave terminal
+- Defining a function: function y = squareThisNumber(x)
+    y = x^2
+
+    Vectorization
+
+-Writing the hypothesis equation in two ways:
+
+-Unvectorized implementation: prediction = 0.0
+    for j = 1:n+1,
+        prediction = prediction + theta(j) * x(j)
+        end;
+-Vectorized implementation: prediction = theta' * x;
