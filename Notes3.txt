@@ -1,0 +1,94 @@
+    Classification
+    
+-Similar to regression, but the values we want to predict are few and discrete
+-Binary classification involves only two values for y, 0 and 1 
+    -y∈{0,1}
+-0 is called the negative class and 1 is called the positive class
+
+    Hypothesis Representation
+    
+-Should now satisfy the inequality 0 ≤ hθ(x) ≤ 1
+-Plug θTx into the logistic/sigmoid function
+    -  g(z) = 1/(1 + e^(-z))
+    -  z = θTx
+    - hypothesis function now gives the probability for a given theta that the output is 1
+
+    Boundary Decision
+    
+-When the logistic function has input >0, it will have output >0.5
+    -So if input to g is θTx, then θTx >= 0 means y=1, else y=0
+-Decision boundary is the line that separates the areas where y=0 and y=1
+
+    Logistic Regression Cost Function
+    
+-Cost(hθ(x),y) = −log(hθ(x))    if y = 1
+-Cost(hθ(x),y) = −log(1−hθ(x))  if y = 0
+-Cost(hθ(x),y) = 0 if hθ(x) = y
+-Cost(hθ(x),y) → ∞ if y=0 and hθ(x) → 1
+-Cost(hθ(x),y) → ∞ if y = 1 and hθ(x)→0
+
+    Simplified Cost Function
+    
+- Cost(hθ(x),y) = −y log(hθ(x)) − (1 − y) log(1 − hθ(x))
+- Full cost function: FILL IN LATER
+- Vectorized implementation: FILL IN LATER
+
+    Logistic Gradient Descent
+    
+-General form: FILL IN LATER
+-Derivative: FILL IN LATER
+-Vectorized: FILL IN LATER
+
+    Advanced Optimization
+    
+-Conjugate gradient, BFGS, and L-BFGS are all more advanced ways to optimize theta instead of gradient descent
+-Use the prewritten libraries in Octave to implement these
+
+    Multiclass CLassification
+    
+-Ex: Sort email into folders like work (y=1), friends (y=2), family (y=3), hobbies (y=4)
+- One-vs-all classification
+    -Instead of y = {0,1} we will expand our definition so that y = {0,1...n}.
+    -Pit each class against all the other classes combined in n+1 binary classification problems
+    -The "one" class is positive and the "all" classes are negative
+    
+-Summary: Train a logistic regression classifier for each class to predict the probability that y=i
+    -To make a prediction on a new x, pick the class that maximizes hθ(x)
+    
+    Data Fitting
+    
+-Underfitting the data can occur with lower order hypotheses, where the hypothesis function fits the data poorly
+    -Also known as high bias
+-Overfitting the data can occur with higher oreder hypotheses, where the hypothesis fits the data really well
+    -Cost function might even be 0
+    -Despite this, the hypothesis is now a bad predictor for future data because it's too specific to the current data and cannot generalize
+-Two main ways to combat overfitting
+    -Reduce the number of features, either manually or with a model selection algorithm
+    -Regularization: keep all features, but reduce the magnitude of the parameters
+        -Works well with lots of features that are somewhat useful
+        
+    Cost Function...Again
+    
+-To nerf higher order variables that are causing overfitting, add a regularization parameter lambda
+-If lambda is too large, it will smooth out and cause underfitting
+-If lambda is too small, it will be too rough and still be overfitted
+
+    Regularized Linear Regression
+    
+- Gradient descent approach
+    - We dont want to penalize θ0, so we separate it from the other theta terms
+    -(lambda / m) * theta j is our regularization term
+    -θj := θj (1-(αλ / m)) - (α/m) sum from i=1 to m of [hθ(xi) - yi] * xji
+        -Update rule for all theta except theta0
+
+-Normal equation approach
+    - X is non-invertible if m < n, and X may be non-invertible if m = n
+    - θ = ((XTX + λ⋅L)^-1)* XTy
+        - L is an (n+1) by (n+1) diagonal matrix with all entries 1 except the first one
+        - Adding the lambda*L term will make XTX invertible
+        
+    Regularized Logistic Regression
+    
+-Gradient descent approach
+    -Same as before, just add regularization term to the end of the cost function, but do not penalize theta0
+    
